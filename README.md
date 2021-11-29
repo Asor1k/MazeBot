@@ -14,3 +14,5 @@
 - **software and hardware** 
 	- **software** ~ matlab
 	- **hardware** ~ mindstorms
+
+link to ev3 functions in matlab - https://nl.mathworks.com/help/supportpkg/legomindstormsev3io/referencelist.html?type=function
