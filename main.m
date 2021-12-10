@@ -4,8 +4,8 @@ function main()
     mA = motor(myrobot, 'A');
     mB = motor(myrobot, 'B');
 
-    mA.Speed = 100;
-    mB.Speed = 100;
+    mA.Speed = 50;
+    mB.Speed = 50;
     
     function moveForward()
         start(mA);
@@ -16,10 +16,18 @@ function main()
         stop(mB, 1); 
     end
     function turnRight()
-        stop(mB, 1);
+        pause(0.3);
+        mB.Speed = -52;
+        mA.Speed = 50;
+        pause(0.5);
+        mB.Speed = 52;
     end 
     function turnLeft()
-        stop(mA, 1);
+        pause(0.3);
+        mA.Speed = -50;
+        mB.Speed = 52;
+        pause(0.5);
+        mA.Speed = 50;
     end 
     
     sensor = sonicSensor(myrobot);
@@ -31,18 +39,14 @@ function main()
     while 1
         leftReflected = readLightIntensity(leftSensor, 'reflected');
         rightReflected = readLightIntensity(rightSensor, 'reflected');
-        
-        if leftReflected < 5
+        display(leftReflected + " " + rightReflected);
+        if leftReflected < 25
             turnLeft();
-            pause(0.5);
-        elseif rightReflected < 5
+        elseif rightReflected < 25
             turnRight();
-            pause(0.5);
         else 
             moveForward();
         end
-
-        pause(0.1);
     end
 
 end
