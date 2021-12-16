@@ -91,109 +91,109 @@ function solveMaze()
    
     display("Start!");
     moveForward();
-%     while 1
-%         leftReflected = readLightIntensity(leftSensor, 'reflected');
-%         rightReflected = readLightIntensity(rightSensor, 'reflected');
-%         middleReflected = readLightIntensity(middleSensor, 'reflected');
-%         distance = readDistance(sensor);
-%         isLeftBlack = leftReflected < 20;
-%         isRightBlack = rightReflected < 20;
-% 
-%         isBothYellow = abs(leftReflected-90) < 5 && abs(rightReflected-90) < 5;
-%         display(middleReflected);
-%         display(leftReflected);
-%         display(rightReflected);
-% 
-%         %CALIBRATION
-% 
-%         setNormalSpeed();
-%         %main logic
-%         if (isLeftBlack && isRightBlack)
-%             crossIndexes(end+1) = currentTurnIndex;
-%             turnsArray(end+1) = 0;
-%             display("Right turn in cross");
-%             turnRight();
-%             continue;
-%         end
-% 
-%         if(isLeftBlack)
-%             callback = checkForward();
-%             if(callback == "Forward")
-%                 turnsArray(end+1) = 1;
-%                 currentTurnIndex = currentTurnIndex + 1;
-% 
-%                 display("Forward turn");
-%                 setNormalSpeed();
-%                 continue;
-%             end
-%             turnsArray(end+1) = 0;
-%             currentTurnIndex = currentTurnIndex + 1;
-%             display("Left turn");
-%             turnLeft();
-% 
-%             continue;
-%         end
-%         if(isRightBlack)
-%             currentTurnIndex = currentTurnIndex + 1;
-% 
-%             display("Right turn");
-%             turnRight();
-%             turnsArray(end+1) = 1;
-%             continue;
-%         end
-% 
-%         %if(isBothYellow)
-%         %   turnArround();
-%         %  turnArround();
-%         %   stopMotor();
-%         %  break;
-%         %end
-%         distance = readDistance(sensor);
-%         if(distance < 0.1)
-%             turnArround();
-%             display("Turn around");
-%             %   turnsArray = turnsArray([1:crossIndexes(end)]);
-%             %  crossIndexes = crossIndexes(1:end-1);
-%             continue;
-%         end
-%         if(middleReflected > 20)
-%             display("\");
-%             stored = middleReflected;
-%             mA.Speed = 30;%A - left
-%             pause(0.2);
-%             middleReflected = readLightIntensity(middleSensor, 'reflected');
-%             if (stored < middleReflected)
-%                 mB.Speed = 10;
-%                 timer = 0;
-%                 flag = false;
-%                 while middleReflected > 20
-%                     mA.Speed = 30;
-%                     middleReflected = readLightIntensity(middleSensor, 'reflected');
-%                     timer = timer + 0.05;
-%                     pause(0.05);
-%                     if (timer > 0.3)
-%                         flag = true;
-%                         break;
-%                     end
-%                 end
-%                 if(flag)
-%                     while middleReflected > 20
-%                         mB.Speed = 30;
-%                         mA.Speed = 10;
-%                         middleReflected = readLightIntensity(middleSensor, 'reflected');
-%                         timer = timer + 0.05;
-%                         pause(0.05);
-%                         if (timer > 0.5)
-%                             flag = true;
-%                             break;
-%                         end
-%                     end
-%                 end
-%             end
-%             setNormalSpeed();
-%         end
-%         display("Forward");
-%     end
+    while 1
+        leftReflected = readLightIntensity(leftSensor, 'reflected');
+        rightReflected = readLightIntensity(rightSensor, 'reflected');
+        middleReflected = readLightIntensity(middleSensor, 'reflected');
+        distance = readDistance(sensor);
+        isLeftBlack = leftReflected < 20;
+        isRightBlack = rightReflected < 20;
+
+        isBothYellow = abs(leftReflected-90) < 5 && abs(rightReflected-90) < 5;
+        display(middleReflected);
+        display(leftReflected);
+        display(rightReflected);
+
+        %CALIBRATION
+
+        setNormalSpeed();
+        %main logic
+        if (isLeftBlack && isRightBlack)
+            crossIndexes(end+1) = currentTurnIndex;
+            turnsArray(end+1) = 0;
+            display("Right turn in cross");
+            turnRight();
+            continue;
+        end
+
+        if(isLeftBlack)
+            callback = checkForward();
+            if(callback == "Forward")
+                turnsArray(end+1) = 1;
+                currentTurnIndex = currentTurnIndex + 1;
+
+                display("Forward turn");
+                setNormalSpeed();
+                continue;
+            end
+            turnsArray(end+1) = 0;
+            currentTurnIndex = currentTurnIndex + 1;
+            display("Left turn");
+            turnLeft();
+
+            continue;
+        end
+        if(isRightBlack)
+            currentTurnIndex = currentTurnIndex + 1;
+
+            display("Right turn");
+            turnRight();
+            turnsArray(end+1) = 1;
+            continue;
+        end
+
+        %if(isBothYellow)
+        %   turnArround();
+        %  turnArround();
+        %   stopMotor();
+        %  break;
+        %end
+        distance = readDistance(sensor);
+        if(distance < 0.1)
+            turnArround();
+            display("Turn around");
+            %   turnsArray = turnsArray([1:crossIndexes(end)]);
+            %  crossIndexes = crossIndexes(1:end-1);
+            continue;
+        end
+        if(middleReflected > 20)
+            display("\");
+            stored = middleReflected;
+            mA.Speed = 30;%A - left
+            pause(0.2);
+            middleReflected = readLightIntensity(middleSensor, 'reflected');
+            if (stored < middleReflected)
+                mB.Speed = 10;
+                timer = 0;
+                flag = false;
+                while middleReflected > 20
+                    mA.Speed = 30;
+                    middleReflected = readLightIntensity(middleSensor, 'reflected');
+                    timer = timer + 0.05;
+                    pause(0.05);
+                    if (timer > 0.3)
+                        flag = true;
+                        break;
+                    end
+                end
+                if(flag)
+                    while middleReflected > 20
+                        mB.Speed = 30;
+                        mA.Speed = 10;
+                        middleReflected = readLightIntensity(middleSensor, 'reflected');
+                        timer = timer + 0.05;
+                        pause(0.05);
+                        if (timer > 0.5)
+                            flag = true;
+                            break;
+                        end
+                    end
+                end
+            end
+            setNormalSpeed();
+        end
+        display("Forward");
+    end
 turnIndex = 1;
     while 1
         leftReflected = readLightIntensity(leftSensor, 'reflected');
