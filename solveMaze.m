@@ -85,7 +85,7 @@ function solveMaze()
         
         end
     end
-    turnsArray = [2,0,0,2,1,2,2,1];  % 0 - left, 1 - forward, 2 - right, 3 - back
+    turnsArray = [];  % 0 - left, 1 - forward, 2 - right, 3 - back
     crossIndexes = [];
     currentTurnIndex = 0;
    
