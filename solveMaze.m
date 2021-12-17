@@ -98,8 +98,9 @@ function solveMaze()
         distance = readDistance(sensor);
         isLeftBlack = leftReflected < 20;
         isRightBlack = rightReflected < 20;
-
-        isBothYellow = abs(leftReflected-90) < 5 && abs(rightReflected-90) < 5;
+        colorLeft = readColor(leftSensor);
+        colorRight = readColor(rightSensor);
+        isBothYellow =  colorRight == "yellow" && colorLeft == "yellow";
         display(middleReflected);
         display(leftReflected);
         display(rightReflected);
@@ -142,18 +143,16 @@ function solveMaze()
             continue;
         end
 
-        %if(isBothYellow)
-        %   turnArround();
-        %  turnArround();
-        %   stopMotor();
-        %  break;
-        %end
+        if(isBothYellow)
+           stopMotor();
+          break;
+        end
         distance = readDistance(sensor);
         if(distance < 0.1)
             turnArround();
             display("Turn around");
-            %   turnsArray = turnsArray([1:crossIndexes(end)]);
-            %  crossIndexes = crossIndexes(1:end-1);
+               turnsArray = turnsArray([1:crossIndexes(end)]);
+               crossIndexes = crossIndexes(1:end-1);
             continue;
         end
         if(middleReflected > 20)
