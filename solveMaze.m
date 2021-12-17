@@ -53,7 +53,7 @@ function solveMaze()
         display("fsedfs");
         
         timerVal = 0;
-
+        %Swing a little bit to the left to try to see black line infront
        while timerVal < 0.25
             mA.Speed = -speed/3;
             mB.Speed = speed/3;
@@ -61,13 +61,15 @@ function solveMaze()
             pause(0.05);
             timerVal = timerVal + 0.05;
        end
+        %Swing a little bit to the right to try to see black line infront
         while timerVal < 0.75
             mA.Speed = speed/3;
             mB.Speed = -speed/3;
             middleReflected = min(readLightIntensity(middleSensor, 'reflected'), middleReflected);
             pause(0.05);
             timerVal = timerVal + 0.05;
-        end
+        end 
+        %Return to start position
        while timerVal < 1
             mA.Speed = -speed/3;
             mB.Speed = speed/3;
@@ -101,52 +103,45 @@ function solveMaze()
         colorLeft = readColor(leftSensor);
         colorRight = readColor(rightSensor);
         isBothYellow =  colorRight == "yellow" && colorLeft == "yellow";
-        display(middleReflected);
-        display(leftReflected);
-        display(rightReflected);
 
         %CALIBRATION
 
         setNormalSpeed();
-        %main logic
+        %Check for cross
         if (isLeftBlack && isRightBlack)
             crossIndexes(end+1) = currentTurnIndex;
             turnsArray(end+1) = 0;
-            display("Right turn in cross");
             turnRight();
             continue;
         end
-
+        %Check for left turn
         if(isLeftBlack)
-            callback = checkForward();
+            callback = checkForward(); %Check if there is the way forward
             if(callback == "Forward")
                 turnsArray(end+1) = 1;
                 currentTurnIndex = currentTurnIndex + 1;
-
-                display("Forward turn");
                 setNormalSpeed();
                 continue;
             end
+            %if there is no way forward move left
             turnsArray(end+1) = 0;
             currentTurnIndex = currentTurnIndex + 1;
-            display("Left turn");
             turnLeft();
-
             continue;
         end
+        %Check for right turn
         if(isRightBlack)
             currentTurnIndex = currentTurnIndex + 1;
-
-            display("Right turn");
             turnRight();
             turnsArray(end+1) = 1;
             continue;
         end
-
+        %Check if bot is on finish
         if(isBothYellow)
            stopMotor();
           break;
         end
+        %Check if there is an object infront
         distance = readDistance(sensor);
         if(distance < 0.1)
             turnArround();
@@ -155,37 +150,36 @@ function solveMaze()
                crossIndexes = crossIndexes(1:end-1);
             continue;
         end
+        %Correction
         if(middleReflected > 20)
-            display("\");
             stored = middleReflected;
-            mA.Speed = 30;%A - left
+            mA.Speed = 30;
             pause(0.2);
             middleReflected = readLightIntensity(middleSensor, 'reflected');
+            %If moved away from line
             if (stored < middleReflected)
                 mB.Speed = 10;
                 timer = 0;
-                flag = false;
+                isNotSeeingWhite = false; %Flag to look if it has not moved back to line
+                %Move to the line
                 while middleReflected > 20
                     mA.Speed = 30;
                     middleReflected = readLightIntensity(middleSensor, 'reflected');
                     timer = timer + 0.05;
                     pause(0.05);
                     if (timer > 0.3)
-                        flag = true;
+                        isNotSeeingWhite = true;
                         break;
                     end
                 end
-                if(flag)
+                %move back
+                if(isNotSeeingWhite)
                     while middleReflected > 20
                         mB.Speed = 30;
                         mA.Speed = 10;
                         middleReflected = readLightIntensity(middleSensor, 'reflected');
                         timer = timer + 0.05;
                         pause(0.05);
-                        if (timer > 0.5)
-                            flag = true;
-                            break;
-                        end
                     end
                 end
             end
@@ -194,6 +188,7 @@ function solveMaze()
         display("Forward");
     end
 turnIndex = 1;
+    %Going by the remebered path
     while 1
         leftReflected = readLightIntensity(leftSensor, 'reflected');
         rightReflected = readLightIntensity(rightSensor, 'reflected');
@@ -215,11 +210,8 @@ turnIndex = 1;
         turnIndex = turnIndex + 1;
         end
     
-                    
-
-        if(turnIndex == 9)
-            turnArround();
-            turnArround();
+        %if finished maze
+        if(turnArray(turnIndex) == turnArray(end))
             stopMotor();
            break;
         end
